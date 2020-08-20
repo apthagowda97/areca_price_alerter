@@ -13,7 +13,7 @@ def parse_url(url:str):
 
     return price_df
 
-def get_price(city:str):
+def get_body(city:str):
     """" Returns message body consisting of Areca price for the given city"""
     
     price_df = parse_url(open('url.txt').read())

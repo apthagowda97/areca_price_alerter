@@ -1,22 +1,22 @@
-import configparser
+import areca_price
+import os
+from dotenv import load_dotenv
 from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
 
 
-def read_config(filename):
-    """Reads the config file."""
-    
-    config = configparser.ConfigParser()
-    config.read(filename)
-    return config
+load_dotenv()
+
+proxy_client = TwilioHttpClient(proxy={'http': os.getenv("HTTP_PROXY"), 'https': os.getenv("HTTPS_PROXY")})
+client = Client(http_client=proxy_client)
 
 def send_sms(body:str):
     """Send the SMS with given message body."""
-
-    config = read_config('config.ini')
-    account_sid =  config['twilio']['account_sid']
-    auth_token  =  config['twilio']['auth_token']
-    from_phone  =  config['twilio']['from_phone']
-    to_phone    =  config['twilio']['to_phone']
-
-    client = Client(account_sid, auth_token) 
+    
+    from_phone = os.getenv("TWILIO_SMS_FROM")
+    to_phone = os.getenv("TWILIO_SMS_TO")
     client.messages.create(from_=from_phone,body=body,to=to_phone)
+
+if __name__=='__main__':
+    body = areca_price.get_body(city='SHIVAMOGGA')
+    send_sms(body=body)
