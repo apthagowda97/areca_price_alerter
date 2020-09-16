@@ -32,4 +32,4 @@ def get_body(city: str):
             body += "{0}({1}): {2}\n".format(row[0][:5], row[1].split("/")[0], row[2])
         return body
     else:
-        return "Not availabele"
+        return "Not available"
