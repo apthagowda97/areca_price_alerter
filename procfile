@@ -1,1 +1,1 @@
-worker: python send_sms.py
+web: gunicorn app:app
