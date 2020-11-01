@@ -1,8 +1,7 @@
+from datetime import date
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-from datetime import date
-
 
 
 def parse_url(url: str):
@@ -23,20 +22,22 @@ def get_body(city: str):
     today = date.today()
     today_date = today.strftime("%d/%m/%Y")
     price_df = parse_url(open("url.txt").read())
+
     if city in price_df.Market.values:
-        data = (
-            price_df[price_df["Market"] == city][
-                ["Variety", "Market Date", "Maximum Price"]
-            ]
-            .sort_values("Variety")
-            .values.tolist()
-        )
-        if today_date == data[0][1]:
+        price_date = price_df[price_df["Market"] == city]["Market Date"].iloc[0]
+        if price_date == today_date:
+            data = (
+                price_df[price_df["Market"] == city][
+                    ["Variety", "Market Date", "Maximum Price"]
+                ]
+                .sort_values("Variety")
+                .values.tolist()
+            )
+
             body = f"\n  {city}\n"
             for row in data:
-                body += "{0}({1}): {2}\n".format(row[0][:5], row[1].split("/")[0], row[2])
+                body += "{0}({1}): {2}\n".format(
+                    row[0][:5], row[1].split("/")[0], row[2]
+                )
             return body
-        else:
-            return None
-    else:
-        return None
+    return None
