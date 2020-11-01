@@ -20,7 +20,9 @@ def send_sms(body: str):
 def main():
     load_dotenv()
     body = areca_price.get_body(city="SHIVAMOGGA")
-    message = send_sms(body=body)
+    if body!= None:
+        #message = send_sms(body=body)
+        print(body)
 
 if __name__ == "__main__":
     main()
