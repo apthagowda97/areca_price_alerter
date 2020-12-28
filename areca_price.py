@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 def parse_url(url: str):
     """Parses the URL and returns the Areca Price data as DataFrame"""
 
-    response = requests.get(url)
+    response = requests.get(url,verify=False)
     soup = BeautifulSoup(response.text, "html.parser")
 
     price_table = soup.find(id="_ctl0_content5_Table1")
